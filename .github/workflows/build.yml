@@ -1,1 +1,35 @@
-.github/workflows/build.yml
+name: Build .deb
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Theos
+        uses: actions/checkout@v4
+        with:
+          repository: theos/theos
+          path: theos
+          submodules: recursive
+
+      - name: Get iOS SDK
+        run: |
+          mkdir -p theos/sdks
+          curl -L https://github.com/theos/sdks/releases/download/iPhoneOS16.5/iPhoneOS16.5.sdk.tar.xz | tar -xJf - -C theos/sdks
+
+      - name: Rename source file
+        run: mv Tweak-14.mm.txt Tweak.mm
+
+      - name: Build
+        env:
+          THEOS: ${{ github.workspace }}/theos
+        run: make package FINALPACKAGE=1
+
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: EverLightReborn
+          path: packages/*.deb
