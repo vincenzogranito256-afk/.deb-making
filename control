@@ -1,0 +1,8 @@
+Package: com.everlightreborn.tweak
+Name: EverLight Reborn
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Animal Company VR tweak - item/monster spawner, infinite ammo, fling teleport, galaxy UI.
+Maintainer: EverLight Reborn
+Section: Tweaks
+Depends: mobilesubstrate | libhooker | substitute
